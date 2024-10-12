@@ -3,6 +3,7 @@ const express = require('express');
 const multer = require('multer');
 const { extractTextFromPdf } = require('./services/pdfService');
 const { parsePdfContentToSections } = require('./services/gptService');
+const { uploadMentee } = require('./services/uploadMentee');
 // const { saveParsedDataToSupabase } = require('./services/supabaseService');
 // const { matchMenteeToMentor } = require('./services/matchingService'); // Assuming you have a matching service
 
@@ -40,15 +41,13 @@ app.post('/upload/mentor', upload.array('files'), async (req, res) => {
             }
         }
           
-
-        // const supabaseResult = await saveParsedDataToSupabase(parsedData);
-        // responses.push({ filename: file.originalname, supabaseResult });
       } else {
         responses.push({ filename: file.originalname, message: 'Unsupported file type' });
       }
     }
     console.log(combinedData);
-
+    //upload json to database
+    uploadMentee(combinedData);
     res.json(responses);
   } catch (error) {
     console.error('Error in /upload/mentor endpoint:', error.message);
