@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title: "MentorShip - Dashboard",
 };
 
 export default async function RootLayout({
