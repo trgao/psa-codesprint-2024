@@ -59,6 +59,16 @@ export default function SignUp() {
         className="border border-solid border-black rounded-md w-72 h-14 p-2"
         required
       />
+      <div className="flex justify-between w-40 m-3">
+        <div>
+        <input type="radio" name="userType" id="Mentee" value="Mentee" defaultChecked/>
+        <label htmlFor="Mentee"> Mentee</label>
+        </div>
+        <div>
+        <input type="radio" name="userType" id="Mentor" value="Mentor"/>
+        <label htmlFor="Mentor"> Mentor</label>
+        </div>
+      </div>
       <button formAction={handleSubmit} disabled={isPending} className="bg-blue-600 rounded-xl w-72 h-14 text-white">
         {isPending ? "Loading" : "Sign Up"}
       </button>
