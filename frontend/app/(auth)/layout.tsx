@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "../globals.css";
+import 'react-toastify/dist/ReactToastify.css';
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { Slide, ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "MentorShip - Login",
 };
 
 export default async function RootLayout({
@@ -26,6 +28,19 @@ export default async function RootLayout({
         className={`antialiased`}
       >
         {children}
+        <ToastContainer
+          position="bottom-right"
+          autoClose={2500}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={false}
+          theme="light"
+          transition={Slide}
+        />
       </body>
     </html>
   );
