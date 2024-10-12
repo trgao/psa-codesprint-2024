@@ -69,6 +69,13 @@ export default function SignUp() {
         <label htmlFor="Mentor"> Mentor</label>
         </div>
       </div>
+      <textarea
+        id="jobDescription"
+        name="jobDescription"
+        placeholder="Job Description*"
+        className="border border-solid border-black rounded-md w-72 h-36 p-2"
+        required
+      />
       <button formAction={handleSubmit} disabled={isPending} className="bg-blue-600 rounded-xl w-72 h-14 text-white">
         {isPending ? "Loading" : "Sign Up"}
       </button>
