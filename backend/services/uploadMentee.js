@@ -1,8 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Supabase client using environment variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 /**
@@ -10,10 +10,10 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
  * @param {Object} menteeData - JSON object containing mentee details.
  * @returns {Promise<Object>} - Returns success or error message.
  */
-export async function insertMentee(menteeData) {
+async function uploadMentee(menteeData) {
   try {
-    const { id, name, email, phone_number, skills, job_description, mbti, location } = menteeData;
-
+    const { id, name, email, phone_number, skills, job_description, mbti, location, mentors } = menteeData;
+    console.log(id,name);
     // Insert data into Supabase 'Mentee' table
     const { data, error } = await supabase
       .from('Mentees')
@@ -27,7 +27,7 @@ export async function insertMentee(menteeData) {
           job_description: job_description,
           mbti: mbti,
           location: location,
-          mentor: []  // Initializing mentor array as empty
+          mentors: mentors ? mentors : []
         }
       ]);
 
@@ -44,3 +44,5 @@ export async function insertMentee(menteeData) {
     return { success: false, message: `Server error: ${error.message}` };
   }
 }
+
+module.exports = { uploadMentee };
