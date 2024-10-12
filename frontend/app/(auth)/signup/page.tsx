@@ -59,7 +59,7 @@ export default function SignUp() {
         className="border border-solid border-black rounded-md w-72 h-14 p-2"
         required
       />
-      <button formAction={handleSubmit} className="bg-blue-600 rounded-xl w-72 h-14 text-white">
+      <button formAction={handleSubmit} disabled={isPending} className="bg-blue-600 rounded-xl w-72 h-14 text-white">
         {isPending ? "Loading" : "Sign Up"}
       </button>
       <div className="bg-blue-600 rounded-xl w-72 h-14 text-white flex flex-col justify-center">
