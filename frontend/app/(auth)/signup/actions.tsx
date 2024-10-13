@@ -13,7 +13,6 @@ export async function signUp(formData: FormData) {
     const userType = formData.get("userType") as string
     const userData = new FormData()
     userData.append("files", formData.get("resume") as File)
-    userData.append("name", formData.get("name") as string)
     userData.append("email", formData.get("email") as string)
     userData.append("password", formData.get("password") as string)
     userData.append("job_description", formData.get("jobDescription") as string)
