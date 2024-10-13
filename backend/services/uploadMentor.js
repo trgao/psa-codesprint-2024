@@ -7,12 +7,12 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 /**
  * Function to insert mentee data into Supabase.
- * @param {Object} menteeData - JSON object containing mentee details.
+ * @param {Object} mentorData - JSON object containing mentee details.
  * @returns {Promise<Object>} - Returns success or error message.
  */
-async function uploadMentee(menteeData) {
+async function uploadMentor(mentorData) {
   try {
-    const { id, name, email, phone_number, skills, job_description, mbti, location } = menteeData;
+    const { id, name, email, phone_number, skills, job_description, mbti, location, mentees, mentee_count } = mentorData;
     console.log(id,name);
     // Insert data into Supabase 'Mentee' table
     const { data, error } = await supabase
@@ -27,17 +27,18 @@ async function uploadMentee(menteeData) {
           job_description: job_description,
           mbti: mbti,
           location: location,
-          mentees: []  // Initializing mentor array as empty
+          mentees: mentees ? mentees : [],
+          mentee_count: mentee_count
         }
       ]);
 
     if (error) {
-      console.error('Error inserting mentee:', error);
-      return { success: false, message: `Error inserting mentee: ${error.message}` };
+      console.error('Error inserting mentor:', error);
+      return { success: false, message: `Error inserting mentor: ${error.message}` };
     }
 
-    console.log('Mentee inserted successfully:', data);
-    return { success: true, message: 'Mentee created successfully!', data };
+    console.log('Mentor inserted successfully:', data);
+    return { success: true, message: 'Mentor created successfully!', data };
 
   } catch (error) {
     console.error('Server error:', error);
@@ -45,4 +46,4 @@ async function uploadMentee(menteeData) {
   }
 }
 
-module.exports = { uploadMentee };
+module.exports = { uploadMentor };

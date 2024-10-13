@@ -1,8 +1,6 @@
 // services/gptService.js
 require('dotenv').config();
 const axios = require('axios');
-// import OpenAI from 'openai';
-// const client = new OpenAI();
 
 // Function to convert text to JSON with specific sections using GPT
 async function parsePdfContentToSections(text) {
