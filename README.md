@@ -23,8 +23,9 @@ A dynamic matching service that processes user data in real time and matches men
 ---
 
 ## Tech Stack
-- **Frontend**: React.js
+- **Frontend**: React.js, Next.js
 - **Backend**: Node.js, Express.js
-- **AI & Data**: SupaBase API
-- **UI Framework**: CSS
+- **Database**: SupaBase
+- **UI Framework**: Tailwind CSS
+- **AI**: OpenAi API
 
