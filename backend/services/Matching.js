@@ -147,7 +147,7 @@ async function matching() {
   
       // Wrap the process interaction in a Promise to handle async behavior
       return new Promise((resolve, reject) => {
-        const program = exec('services/hungarian');
+        const program = spawn('services/hungarian');
       
         // Error handling for stdin stream
         program.stdin.on('error', (error) => {
