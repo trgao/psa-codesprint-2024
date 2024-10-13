@@ -73,5 +73,6 @@
     max-height: 80vh;
     max-width: 900px;
     text-align: center;
+    overflow: auto;
 }
 

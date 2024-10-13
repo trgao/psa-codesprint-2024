@@ -25,7 +25,7 @@ export default async function Mentees() {
 
   return (
     <div className="flex justify-center items-center h-full w-full flex-wrap">
-      {profile.mentors.length == 0 && <p>Please wait while matching process is still ongoing</p>}
+      {profile.mentees.length == 0 && <p>Please wait while matching process is still ongoing</p>}
       {profile.mentees.map((id: number) => <MenteeCard id={id} key={id} />)}
     </div>
   )
