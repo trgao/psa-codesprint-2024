@@ -1,11 +1,11 @@
-#PSA Code Sprint Hackathon 2024
+# PSA Code Sprint Hackathon 2024
 ## About 📘
 **MentorShip** is a in-house mentor-matching portal that leverages the power of AI, algorithms, and database to automate mentor-mentee pairings. 
 
 ### 1. MatchMe 🤖 [Matching]
 A dynamic matching service that processes user data in real time and matches mentees to mentors using smart algorithms to ensure optimal matching based on interests, skillsets, personalities and more!
 
-- **External Demo** | **Internal Demo**  
+- [**Demo**](https://psa-codesprint-2024.vercel.app/login)
 ---
 
 
@@ -25,10 +25,6 @@ A dynamic matching service that processes user data in real time and matches men
 ## Tech Stack
 - **Frontend**: React.js
 - **Backend**: Node.js, Express.js
-- **AI & Data**: Firebase API
+- **AI & Data**: SupaBase API
 - **UI Framework**: CSS
- 
----
-
-## How to Run the Project Locally
 
