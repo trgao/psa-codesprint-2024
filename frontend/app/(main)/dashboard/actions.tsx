@@ -1,7 +1,7 @@
 "use server"
 
 export async function startMatching() {
-  fetch("http://localhost:8000/matching", {
+  fetch("https://psa-codesprint-2024.onrender.com/matching", {
       method: "POST",
     })
       .then((res) => res.json())
