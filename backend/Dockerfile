@@ -17,7 +17,7 @@ RUN npm install
 # Copy the application code
 COPY . .
 
-RUN g++ -o hungarian ./services/hungarian.cpp
+RUN g++ -o ./services/hungarian ./services/hungarian.cpp
 
 # Expose internal port
 EXPOSE 8000
