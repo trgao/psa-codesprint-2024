@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const int N = 300;
+const int N = 200;
 
 /* Complexity: O(n^3) but optimized
 It finds minimum cost maximum matching.
