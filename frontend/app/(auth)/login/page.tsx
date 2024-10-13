@@ -40,9 +40,9 @@ export default function Login() {
       <button formAction={handleSignIn} disabled={isPending} className="bg-blue-600 rounded-xl w-72 h-14 text-white">
         {isPending ? "Loading" : "Sign In"}
       </button>
-      <div className="bg-blue-600 rounded-xl w-72 h-14 text-white flex flex-col justify-center">
-        <Link href="/signup">Sign Up</Link>
-      </div>
+      <Link href="/signup">
+        <button className="bg-blue-600 rounded-xl w-72 h-14 text-white">Sign Up</button>
+      </Link>
     </form>
   )
 }

@@ -27,10 +27,6 @@ async function fetchProfiles() {
 
 // Sample function to evaluate mentor-mentee compatibility using GPT
 async function calculateEdgeWeight(mentorProfile, menteeProfile) {
-    // console.log(mentorProfile);
-    // for (const mentee of menteeProfiles) {
-    //     console.log(`nig`, mentee.id);
-    // }
     const prompt = `
         You are tasked with evaluating how much a mentor can boost a mentee's potential based on their profiles. 
     
@@ -94,7 +90,6 @@ async function calculateEdgeWeight(mentorProfile, menteeProfile) {
 async function generateGraphWithAdjMatrix(mentors, mentees) {
     const adjacencyMatrix = [];
     const maxConcurrentRequests = 10; // Adjust based on your rate limits and network capacity
-    // console.log("wallah");
     for (const mentorProfile of mentors) {
         const row = [];
         const promises = [];
@@ -125,7 +120,6 @@ async function generateGraphWithAdjMatrix(mentors, mentees) {
         // Replace any nulls with 0s to ensure consistent row length
         const filledRow = row.map(score => (score === null ? 0 : score));
         adjacencyMatrix.push(filledRow);
-        // console.log(filledRow);
     }
 
     return adjacencyMatrix;
