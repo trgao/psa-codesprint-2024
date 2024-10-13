@@ -34,7 +34,7 @@ app.post('/upload/mentor', upload.array('files'), async (req, res) => {
         const parsedData = JSON.parse(parsedInfo);
         // Combine parsed data with existing combinedData object
         for (const [key, value] of Object.entries(parsedData)) {
-            if (key == "name" || key == "email") {
+            if (key == "email") {
               continue;
             } else if (combinedData[key]) {
                 combinedData[key] += `\n${value}`; // Concatenate if key already exists
@@ -79,7 +79,7 @@ app.post('/upload/mentee', upload.array('files'), async (req, res) => {
             const parsedData = JSON.parse(parsedInfo);
             // Combine parsed data with existing combinedData object
             for (const [key, value] of Object.entries(parsedData)) {
-                if (key == "name" || key == "email") {
+                if (key == "email") {
                   continue;
                 } else if (combinedData[key]) {
                     combinedData[key] += `\n${value}`; // Concatenate if key already exists
