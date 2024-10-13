@@ -6,6 +6,7 @@ const { parsePdfContentToSections } = require('./services/gptService');
 const { uploadMentee } = require('./services/uploadMentee');
 const { uploadMentor } = require('./services/uploadMentor');
 const { matching } = require('./services/Matching');
+const { updateTables } = require('./services/updateTables');
 // const { saveParsedDataToSupabase } = require('./services/supabaseService');
 // const { matchMenteeToMentor } = require('./services/matchingService'); // Assuming you have a matching service
 
@@ -103,9 +104,11 @@ app.post('/upload/mentee', upload.array('files'), async (req, res) => {
     }
 });
 
-app.post('/matching', (req, res) => {
+app.post('/matching', async (req, res) => {
     try {
-      matching(); // Call your main matching function
+      const matches = await matching(); 
+      console.log("nig", matches);
+      updateTables(matches);
       res.send('Matching process triggered successfully');
     } catch (error) {
       res.status(500).send('Error triggering matching process');
