@@ -12,11 +12,11 @@ async function parsePdfContentToSections(text) {
         - name
         - email
         - phone_number
-        - skills
+        - skills as a STRING ARRAY, must be a string array
         
         Content: ${text}
         
-        Respond with a JSON object containing these sections, even if some sections are empty or not present.
+        Respond with a JSON object containing these sections and ONLY these sections, even if some sections are empty or not present.
     `;
     
 

@@ -12,14 +12,13 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
  */
 async function uploadMentee(menteeData) {
   try {
-    const { id, name, email, phone_number, skills, job_description, mbti, location, mentors } = menteeData;
-    console.log(id,name);
+    const { name, email, phone_number, skills, job_description, mbti, location, mentors } = menteeData;
+    console.log(name);
     // Insert data into Supabase 'Mentee' table
     const { data, error } = await supabase
       .from('Mentees')
       .insert([
         {
-          id: id,
           name: name,
           email: email,
           phone_number: phone_number,

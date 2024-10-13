@@ -7,11 +7,9 @@ const { uploadMentee } = require('./services/uploadMentee');
 const { uploadMentor } = require('./services/uploadMentor');
 const { matching } = require('./services/Matching');
 const { updateTables } = require('./services/updateTables');
-// const { saveParsedDataToSupabase } = require('./services/supabaseService');
-// const { matchMenteeToMentor } = require('./services/matchingService'); // Assuming you have a matching service
 
 const app = express();
-const port = 5000;
+const port = 8000;
 const upload = multer({ dest: 'uploads/' });
 
 // Endpoint for handling mentor uploads
@@ -37,7 +35,7 @@ app.post('/upload/mentor', upload.array('files'), async (req, res) => {
         const parsedData = JSON.parse(parsedInfo);
         // Combine parsed data with existing combinedData object
         for (const [key, value] of Object.entries(parsedData)) {
-            if (combinedData[key]) {
+            if (key != "name" && key != "email" && combinedData[key]) {
                 combinedData[key] += `\n${value}`; // Concatenate if key already exists
             } else {
                 combinedData[key] = value; // Add new key-value pair if key doesn't exist
@@ -50,7 +48,7 @@ app.post('/upload/mentor', upload.array('files'), async (req, res) => {
     }
     console.log(combinedData);
     //upload json to database
-    uploadMentor(combinedData);
+    await uploadMentor(combinedData);
     res.json(responses);
   } catch (error) {
     console.error('Error in /upload/mentor endpoint:', error.message);
@@ -81,25 +79,22 @@ app.post('/upload/mentee', upload.array('files'), async (req, res) => {
             const parsedData = JSON.parse(parsedInfo);
             // Combine parsed data with existing combinedData object
             for (const [key, value] of Object.entries(parsedData)) {
-                if (combinedData[key]) {
+                if (key != "name" && key != "email" && combinedData[key]) {
                     combinedData[key] += `\n${value}`; // Concatenate if key already exists
                 } else {
                     combinedData[key] = value; // Add new key-value pair if key doesn't exist
                 }
             }
-              
-    
-            // const supabaseResult = await saveParsedDataToSupabase(parsedData);
-            // responses.push({ filename: file.originalname, supabaseResult });
           } else {
             responses.push({ filename: file.originalname, message: 'Unsupported file type' });
           }
         }
         console.log(combinedData);
-    
+        //upload json to database
+        await uploadMentee(combinedData);
         res.json(responses);
     } catch (error) {
-        console.error('Error in /upload/mentor endpoint:', error.message);
+        console.error('Error in /upload/mentee endpoint:', error.message);
         res.status(500).json({ error: error.message });
     }
 });
@@ -107,7 +102,6 @@ app.post('/upload/mentee', upload.array('files'), async (req, res) => {
 app.post('/matching', async (req, res) => {
     try {
       const matches = await matching(); 
-      console.log("nig", matches);
       updateTables(matches);
       res.send('Matching process triggered successfully');
     } catch (error) {

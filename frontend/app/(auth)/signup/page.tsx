@@ -76,6 +76,20 @@ export default function SignUp() {
         className="border border-solid border-black rounded-md w-72 h-36 p-2"
         required
       />
+      <input
+        id="mbti"
+        name="mbti"
+        placeholder="MBTI*"
+        className="border border-solid border-black rounded-md w-72 h-14 p-2"
+        required
+      />
+      <input
+        id="location"
+        name="location"
+        placeholder="Location*"
+        className="border border-solid border-black rounded-md w-72 h-14 p-2"
+        required
+      />
       <button formAction={handleSubmit} disabled={isPending} className="bg-blue-600 rounded-xl w-72 h-14 text-white">
         {isPending ? "Loading" : "Sign Up"}
       </button>

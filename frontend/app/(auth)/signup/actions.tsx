@@ -11,6 +11,30 @@ export async function signUp(formData: FormData) {
     throw new Error("File is not in pdf format")
   } else {
     console.log(formData)
+    const userType = formData.get("userType") as string
+    const userData = new FormData()
+    userData.append("files", formData.get("resume") as File)
+    userData.append("name", formData.get("name") as string)
+    userData.append("email", formData.get("email") as string)
+    userData.append("password", formData.get("password") as string)
+    userData.append("job_description", formData.get("jobDescription") as string)
+    userData.append("mbti", formData.get("mbti") as string)
+    userData.append("location", formData.get("location") as string)
+    if (userType == "Mentee") {
+      fetch("http://localhost:8000/upload/mentee", {
+        method: "POST",
+        body: userData
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err))
+    } else {
+      fetch("http://localhost:8000/upload/mentor", {
+        method: "POST",
+        body: userData
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err))
+    }
   }
   // const supabase = createClient()
 
