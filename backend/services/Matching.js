@@ -91,64 +91,10 @@ async function calculateEdgeWeight(mentorProfile, menteeProfile) {
   }
 
 
-// // Sample function to evaluate mentor-mentee compatibility using GPT
-// async function calculateEdgeWeights(mentorProfile, menteeProfiles) {
-//     // console.log(mentorProfile);
-//     // for (const mentee of menteeProfiles) {
-//     //     console.log(`nig`, mentee.id);
-//     // }
-//     const prompt = `
-//         You are tasked with evaluating how much a mentor can boost a mentee's potential based on their profiles. 
-    
-//         For each mentee, consider the following factors:
-//         - Skill Match: How well the mentor’s skills align with the mentee’s learning needs.
-//         - Experience Level: Whether the mentor's experience complements the mentee's current stage.
-//         - Job Role and Interests Alignment: Whether the mentor's job description and interests align with the mentee’s career goals.
-//         - MBTI Compatibility: How well their personality types work together in a mentorship setting.
-//         - Additional Personal Qualities: Any other qualities that might affect the mentorship potential.
-    
-//         Output a row of single total scores from 0 to 100 representing the predicted boost the mentor will provide to each mentee.
-    
-//         Mentor Profile:
-//         ${JSON.stringify(mentorProfile)}
-    
-//         Mentee Profiles:
-//         ${JSON.stringify(menteeProfiles)}
-    
-//         Please respond with only ONE ROW of scores, each number with ONE comma in between, and ABSOLUTELY no additional text, and ABSOLUTELY not as a json.
-//     `;
-    
-//     try {
-//         const response = await axios.post(
-//             'https://api.openai.com/v1/chat/completions',
-//             {
-//             model: 'gpt-3.5-turbo', 
-//             messages: [{ role: 'user', content: prompt }],
-//             },
-//             {
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-//             },
-//             }
-//         );
-    
-//         // Parse the scores from the response
-//         const scoreText = response.data.choices[0].message.content.trim();
-//         // console.log(scoreText);
-//         const scores = scoreText.split(',').map(Number); // Convert comma-separated values to an array of numbers
-//         return scores;
-
-//     } catch (error) {
-//         console.error('Error calculating edge weights:', error.response ? error.response.data : error.message);
-//         return menteeProfiles.map(() => null);
-//     }
-//   }
-
 async function generateGraphWithAdjMatrix(mentors, mentees) {
     const adjacencyMatrix = [];
     const maxConcurrentRequests = 10; // Adjust based on your rate limits and network capacity
-    console.log("wallah");
+    // console.log("wallah");
     for (const mentorProfile of mentors) {
         const row = [];
         const promises = [];
@@ -179,102 +125,81 @@ async function generateGraphWithAdjMatrix(mentors, mentees) {
         // Replace any nulls with 0s to ensure consistent row length
         const filledRow = row.map(score => (score === null ? 0 : score));
         adjacencyMatrix.push(filledRow);
-        console.log(filledRow);
+        // console.log(filledRow);
     }
 
     return adjacencyMatrix;
 }
 
-//   async function generateGraphWithAdjMatrix(mentors, mentees) {
-//     const adjacencyMatrix = [];
-//     const batchSize = 5;
 
-//     for (const mentorProfile of mentors) {
-//         const rowPromises = [];
-
-//         for (let i = 0; i < mentees.length; i += batchSize) {
-//             const menteeBatch = mentees.slice(i, Math.min(mentees.length, i + batchSize));
-//             // Push each batch calculation as a promise to the rowPromises array
-//             rowPromises.push(calculateEdgeWeights(mentorProfile, menteeBatch).then(batchScores => {
-//                 // Ensure batchScores has batchSize elements, filling with 0s if necessary
-//                 while (batchScores.length < Math.min(mentees.length, i + batchSize)-i) {
-//                     batchScores.push(0);
-//                 }
-//                 return batchScores;
-//             }));
-//         }
-
-//         // Wait for all batch scores to resolve concurrently
-//         const batchRows = await Promise.all(rowPromises);
-//         const row = batchRows.flat(); // Flatten the array to get a single row
-//         adjacencyMatrix.push(row);
-//     }
-
-//     return adjacencyMatrix;
-// }
-  
-
-// Main function to fetch data and call GPT for adjacency list generation
 async function matching() {
-  try {
-    const { mentors, mentees } = await fetchProfiles();
-
-    if (mentors.length === 0 || mentees.length === 0) {
-      console.log('No mentors or mentees available for matching.');
-      return;
-    }
-
-    const numMentors = mentors.length;
-    const numMentees = mentees.length;
-    const adjacencyMatrix = await generateGraphWithAdjMatrix(mentors, mentees);
-    const capacityVector = mentors.map(mentor => mentor.mentee_count);
-
-    // Format the input for the C++ executable
-    let input = `${numMentors} ${numMentees}\n`;
-
-    // Append adjacency matrix rows as space-separated strings
-    input += adjacencyMatrix.map(row => row.join(' ')).join('\n') + '\n';
-
-    // Append capacity vector as a space-separated string
-    input += capacityVector.join(' ') + '\n';
-    console.log(input);
-    const program = spawn('services/hungarian.exe'); 
-    // Send the formatted input data to the program's stdin
-    program.stdin.write(input);
-    program.stdin.end(); // Close the stdin stream after sending all input data
-
-    let mentorsData = [];
-
-    // Handle the program's output
-    program.stdout.on('data', (data) => {
-        const lines = data.toString().trim().split('\n');
-    
-        lines.forEach((line, index) => {
-            console.log(line,index);
-            // Assume each line is space-separated: 'mentor_id mentee_id1 mentee_id2 ...'
+    try {
+      const { mentors, mentees } = await fetchProfiles();
+  
+      if (mentors.length === 0 || mentees.length === 0) {
+        console.log('No mentors or mentees available for matching.');
+        return [];
+      }
+  
+      const numMentors = mentors.length;
+      const numMentees = mentees.length;
+      const adjacencyMatrix = await generateGraphWithAdjMatrix(mentors, mentees);
+      const capacityVector = mentors.map(mentor => mentor.mentee_count);
+  
+      // Format the input for the C++ executable
+      let input = `${numMentors} ${numMentees}\n`;
+      input += adjacencyMatrix.map(row => row.join(' ')).join('\n') + '\n';
+      input += capacityVector.join(' ') + '\n';
+  
+      // Wrap the process interaction in a Promise to handle async behavior
+      return new Promise((resolve, reject) => {
+        const program = spawn('services/hungarian.exe');
+  
+        // Send input data to the program's stdin
+        program.stdin.write(input);
+        program.stdin.end(); // Close the stdin stream
+  
+        let mentorsData = [];
+  
+        // Handle the program's stdout data
+        program.stdout.on('data', (data) => {
+          const lines = data.toString().replace(/\r/g, ' ').split('\n');
+          
+          lines.forEach((line, index) => {
             const menteeIndexes = line.trim().split(/\s+/);
-            
             const mentorId = mentors[index].id;
-            
-            // Create individual mentor-mentee pair objects
-            menteeIndexes.forEach((menteeIndex) => {
-                mentorsData.push({ mentor_id: mentorId, mentee_id: mentees[menteeIndex].id });
-                
-            });
+  
+            // Create mentor-mentee pair objects
+            if (menteeIndexes[0] !== '') {
+              menteeIndexes.forEach((menteeIndex) => {
+                if (menteeIndex && mentees[menteeIndex]) {
+                  mentorsData.push({ mentee_id: mentees[menteeIndex].id, mentor_id: mentorId });
+                }
+              });
+            }
+          });
         });
-    });
-    program.stderr.on('data', (data) => {
-        console.error(`Error: ${data}`);
-    });
-
-    program.on('close', (code) => {
-        console.log(`Process exited with code ${code}`);
-        console.log('Generated JSON:', JSON.stringify(mentorsData, null, 2));
-    });
-
-  } catch (error) {
-    console.error('Error in adjacency matrix generation process:', error.message);
+  
+        // Handle any errors from the program
+        program.stderr.on('data', (data) => {
+          console.error(`Error: ${data.toString()}`);
+        });
+  
+        // Resolve or reject the promise once the program closes
+        program.on('close', (code) => {
+          if (code !== 0) {
+            reject(new Error(`Process exited with code ${code}`));
+          } else {
+            console.log(`Process exited with code ${code}`);
+            console.log('Generated JSON:', JSON.stringify(mentorsData, null, 2));
+            resolve(mentorsData); // Resolve with the populated mentorsData
+          }
+        });
+      });
+    } catch (error) {
+      console.error('Error in adjacency matrix generation process:', error.message);
+      return []; // Return an empty array if an error occurs
+    }
   }
-}
 
 module.exports = { matching };

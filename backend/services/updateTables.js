@@ -6,22 +6,17 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-/**
- * Function to update Supabase Mentees and Mentors tables based on a JSON file input.
- * @param {string} jsonFilePath - Path to the JSON file containing mentee and mentor ID pairs.
- */
-async function updateTables(jsonFilePath) {
+async function updateTables(pairs) {
   try {
     // Read the JSON file
-    const data = await fs.readFile(jsonFilePath, 'utf-8');
-    const pairs = JSON.parse(data);  // Expected format: [{mentee_id: 1, mentor_id: 100}, ...]
-
+    // const pairs = JSON.parse(data);  // Expected format: [{mentee_id: 1, mentor_id: 100}, ...]
+    console.log(pairs);
     for (const pair of pairs) {
       const { mentee_id, mentor_id } = pair;
 
       // 1. Update Mentee's mentors array
       let { data: mentee, error: menteeError } = await supabase
-        .from('Mentees')
+        .from('Mentees1')
         .select('mentors')
         .eq('id', mentee_id)
         .single();
@@ -34,7 +29,7 @@ async function updateTables(jsonFilePath) {
       const updatedMentors = mentee.mentors ? [...mentee.mentors, mentor_id] : [mentor_id];
 
       const { error: updateMenteeError } = await supabase
-        .from('Mentees')
+        .from('Mentees1')
         .update({ mentors: updatedMentors })
         .eq('id', mentee_id);
 
@@ -45,7 +40,7 @@ async function updateTables(jsonFilePath) {
 
       // 2. Update Mentor's mentees array and decrement mentee_count
       let { data: mentor, error: mentorError } = await supabase
-        .from('Mentors')
+        .from('Mentors1')
         .select('mentees, mentee_count')
         .eq('id', mentor_id)
         .single();
@@ -59,7 +54,7 @@ async function updateTables(jsonFilePath) {
       const updatedMenteeCount = mentor.mentee_count > 0 ? mentor.mentee_count - 1 : 0;
 
       const { error: updateMentorError } = await supabase
-        .from('Mentors')
+        .from('Mentors1')
         .update({ mentees: updatedMentees, mentee_count: updatedMenteeCount })
         .eq('id', mentor_id);
 
