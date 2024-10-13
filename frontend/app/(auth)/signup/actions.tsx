@@ -34,6 +34,7 @@ export async function signUp(formData: FormData) {
           }
         })
     } else {
+      userData.append("mentee_count", formData.get("menteeCount") as string)
       return fetch("http://localhost:8000/upload/mentor", {
         method: "POST",
         body: userData

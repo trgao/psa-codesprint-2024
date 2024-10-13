@@ -1,9 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import MenteeCard from './menteeCard'
-import Mentee from '@/types/mentee'
 
-export default async function Mentees({ mentee }: { mentee: Mentee }) {
+export default async function Mentees() {
   const supabase = createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -17,6 +16,7 @@ export default async function Mentees({ mentee }: { mentee: Mentee }) {
     .select()
     .eq("user_id", user.id)).data
   
+  console.log(profileQuery)
   if (profileQuery == null || profileQuery.length == 0) {
     return notFound()
   }
