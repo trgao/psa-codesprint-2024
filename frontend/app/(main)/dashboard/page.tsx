@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Mentees from './mentees'
 import Mentors from './mentors'
+import SuperAdmin from './superadmin'
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -10,6 +11,10 @@ export default async function Dashboard() {
 
   if (!user) {
     redirect('/login')
+  }
+
+  if (user.email == "admin@admin.com") {
+    return <SuperAdmin />
   }
 
   const mentorQuery = await supabase.from("Mentors").select().eq("user_id", user.id)

@@ -107,6 +107,7 @@ app.post('/matching', async (req, res) => {
       updateTables(matches);
       res.send('Matching process triggered successfully');
     } catch (error) {
+      console.log(error)
       res.status(500).send('Error triggering matching process');
     }
 });
