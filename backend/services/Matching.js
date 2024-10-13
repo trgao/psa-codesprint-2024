@@ -147,7 +147,7 @@ async function matching() {
   
       // Wrap the process interaction in a Promise to handle async behavior
       return new Promise((resolve, reject) => {
-        const program = spawn('services/hungarian.exe');
+        const program = spawn('services/hungarian');
   
         // Send input data to the program's stdin
         program.stdin.write(input);
