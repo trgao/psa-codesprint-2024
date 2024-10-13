@@ -16,7 +16,7 @@ async function updateTables(pairs) {
 
       // 1. Update Mentee's mentors array
       let { data: mentee, error: menteeError } = await supabase
-        .from('Mentees1')
+        .from('Mentees')
         .select('mentors')
         .eq('id', mentee_id)
         .single();
@@ -29,7 +29,7 @@ async function updateTables(pairs) {
       const updatedMentors = mentee.mentors ? [...mentee.mentors, mentor_id] : [mentor_id];
 
       const { error: updateMenteeError } = await supabase
-        .from('Mentees1')
+        .from('Mentees')
         .update({ mentors: updatedMentors })
         .eq('id', mentee_id);
 
@@ -40,7 +40,7 @@ async function updateTables(pairs) {
 
       // 2. Update Mentor's mentees array and decrement mentee_count
       let { data: mentor, error: mentorError } = await supabase
-        .from('Mentors1')
+        .from('Mentors')
         .select('mentees, mentee_count')
         .eq('id', mentor_id)
         .single();
@@ -54,7 +54,7 @@ async function updateTables(pairs) {
       const updatedMenteeCount = mentor.mentee_count > 0 ? mentor.mentee_count - 1 : 0;
 
       const { error: updateMentorError } = await supabase
-        .from('Mentors1')
+        .from('Mentors')
         .update({ mentees: updatedMentees, mentee_count: updatedMenteeCount })
         .eq('id', mentor_id);
 

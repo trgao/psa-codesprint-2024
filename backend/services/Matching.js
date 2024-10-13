@@ -9,14 +9,14 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 // Fetch profiles from Supabase
 async function fetchProfiles() {
   const { data: mentors, error: mentorError } = await supabase
-    .from('Mentors1')
+    .from('Mentors')
     .select('*')
     .gt('mentee_count', 0);
 
   const { data: mentees, error: menteeError } = await supabase
-    .from('Mentees1')
-    .select('*');
-
+    .from('Mentees')
+    .select('*')
+    .eq('mentors', '{}'); // filters empty arrays;
   if (mentorError || menteeError) {
     console.error('Error fetching profiles:', mentorError || menteeError);
     return { mentors: [], mentees: [] };
