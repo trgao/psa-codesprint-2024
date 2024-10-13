@@ -24,7 +24,8 @@ export default async function Mentors() {
   const profile = profileQuery[0]
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen">
+    <div className="flex justify-center items-center h-full w-full flex-wrap">
+      {profile.mentors.length == 0 && <p>Please wait while matching process is still ongoing</p>}
       {profile.mentors.map((id: number) => <MentorCard id={id} key={id} />)}
     </div>
   )
