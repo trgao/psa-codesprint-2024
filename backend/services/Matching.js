@@ -148,22 +148,27 @@ async function matching() {
       // Wrap the process interaction in a Promise to handle async behavior
       return new Promise((resolve, reject) => {
         const program = spawn('services/hungarian');
-  
-        // Send input data to the program's stdin
-        program.stdin.write(input);
-        program.stdin.end(); // Close the stdin stream
-  
+      
+        // Error handling for stdin stream
+        program.stdin.on('error', (error) => {
+          console.error(`Error writing to stdin: ${error.message}`);
+          reject(error);
+        });
+      
+        // Send input data to the program's stdin after a slight delay
+        setTimeout(() => {
+          program.stdin.write(input);
+          program.stdin.end(); // Close the stdin stream
+        }, 100); // Adjust the timeout if necessary
+      
         let mentorsData = [];
-  
-        // Handle the program's stdout data
+      
         program.stdout.on('data', (data) => {
           const lines = data.toString().replace(/\r/g, ' ').split('\n');
-          
           lines.forEach((line, index) => {
             const menteeIndexes = line.trim().split(/\s+/);
             const mentorId = mentors[index].id;
-  
-            // Create mentor-mentee pair objects
+            
             if (menteeIndexes[0] !== '') {
               menteeIndexes.forEach((menteeIndex) => {
                 if (menteeIndex && mentees[menteeIndex]) {
@@ -173,23 +178,22 @@ async function matching() {
             }
           });
         });
-  
-        // Handle any errors from the program
+      
         program.stderr.on('data', (data) => {
           console.error(`Error: ${data.toString()}`);
         });
-  
-        // Resolve or reject the promise once the program closes
+      
         program.on('close', (code) => {
           if (code !== 0) {
             reject(new Error(`Process exited with code ${code}`));
           } else {
             console.log(`Process exited with code ${code}`);
             console.log('Generated JSON:', JSON.stringify(mentorsData, null, 2));
-            resolve(mentorsData); // Resolve with the populated mentorsData
+            resolve(mentorsData);
           }
         });
       });
+
     } catch (error) {
       console.error('Error in adjacency matrix generation process:', error.message);
       return []; // Return an empty array if an error occurs
