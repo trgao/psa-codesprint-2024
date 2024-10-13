@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import styles from './Dashboard.module.css'
 import { signOut } from "./actions";
 import Image from "next/image";
+import { Slide, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 export const metadata: Metadata = {
   title: "MentorShip - Dashboard",
@@ -43,6 +45,19 @@ export default async function RootLayout({
             </div>
           </div>
         </div>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={2500}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={false}
+          theme="light"
+          transition={Slide}
+        />
       </body>
     </html>
   );
