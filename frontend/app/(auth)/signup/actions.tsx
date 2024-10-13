@@ -25,7 +25,7 @@ export async function signUp(formData: FormData) {
     userData.append("location", formData.get("location") as string);
     // change to proper api backend
     if (userType == "Mentee") {
-      return fetch("http://localhost:8000/upload/mentee", {
+      return fetch("https://psa-codesprint-2024.onrender.com/upload/mentee", {
         method: "POST",
         body: userData,
       })
@@ -40,7 +40,7 @@ export async function signUp(formData: FormData) {
         });
     } else {
       userData.append("mentee_count", formData.get("menteeCount") as string);
-      return fetch("http://localhost:8000/upload/mentor", {
+      return fetch("https://psa-codesprint-2024.onrender.com/upload/mentor", {
         method: "POST",
         body: userData,
       })
