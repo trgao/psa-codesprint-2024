@@ -15,11 +15,14 @@ export default async function Dashboard() {
   const mentorQuery = await supabase.from("Mentors").select().eq("user_id", user.id)
   const menteeQuery = await supabase.from("Mentees").select().eq("user_id", user.id)
 
+  console.log(mentorQuery?.data?.length)
+  console.log(menteeQuery?.data?.length)
+
   // User can only be mentor or mentee
-  if (mentorQuery?.data?.length == 1) {
-    return <Mentees mentee={mentorQuery.data[0]} />
-  } else if (menteeQuery?.data?.length == 1) {
+  if (menteeQuery?.data?.length == 1) {
     return <Mentors />
+  } else if (mentorQuery?.data?.length == 1) {
+    return <Mentees />
   } else {
     return notFound()
   }
