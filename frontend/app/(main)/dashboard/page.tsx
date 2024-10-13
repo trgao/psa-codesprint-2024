@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Mentees from './mentees'
 import Mentors from './mentors'
+import SuperAdmin from './superadmin'
 import styles from './Dashboard.module.css'
 import Image from 'next/image'
 import { signOut } from '../actions'
@@ -14,8 +15,12 @@ export default async function Dashboard() {
     redirect('/login')
   }
 
-  const mentorQuery = await supabase.from('Mentors').select().eq('user_id', user.id)
-  const menteeQuery = await supabase.from('Mentees').select().eq('user_id', user.id)
+  if (user.email == "admin@admin.com") {
+    return <SuperAdmin />
+  }
+
+  const mentorQuery = await supabase.from("Mentors").select().eq("user_id", user.id)
+  const menteeQuery = await supabase.from("Mentees").select().eq("user_id", user.id)
 
   if (mentorQuery?.data?.length === 1) {
     return (
