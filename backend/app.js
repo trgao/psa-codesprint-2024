@@ -15,7 +15,6 @@ const upload = multer({ dest: 'uploads/' });
 // Endpoint for handling mentor uploads
 app.post('/upload/mentor', upload.array('files'), async (req, res) => {
   try {
-    const responses = [];
     let combinedData = {};
 
     // First, add any additional fields from req.body into combinedData
@@ -35,31 +34,32 @@ app.post('/upload/mentor', upload.array('files'), async (req, res) => {
         const parsedData = JSON.parse(parsedInfo);
         // Combine parsed data with existing combinedData object
         for (const [key, value] of Object.entries(parsedData)) {
-            if (key != "name" && key != "email" && combinedData[key]) {
+            if (key == "name" || key == "email") {
+              continue;
+            } else if (combinedData[key]) {
                 combinedData[key] += `\n${value}`; // Concatenate if key already exists
             } else {
                 combinedData[key] = value; // Add new key-value pair if key doesn't exist
             }
         }
-          
       } else {
-        responses.push({ filename: file.originalname, message: 'Unsupported file type' });
+        throw new Error('Unsupported file type');
       }
     }
     console.log(combinedData);
     //upload json to database
-    await uploadMentor(combinedData);
-    res.json(responses);
+    const response = await uploadMentor(combinedData);
+    console.log(response);
+    return res.json(response);
   } catch (error) {
     console.error('Error in /upload/mentor endpoint:', error.message);
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ statusCode: 500, message: error.message });
   }
 });
 
 // Endpoint for handling mentee uploads and matching them to mentors
 app.post('/upload/mentee', upload.array('files'), async (req, res) => {
     try {
-        const responses = [];
         let combinedData = {};
     
         // First, add any additional fields from req.body into combinedData
@@ -79,23 +79,25 @@ app.post('/upload/mentee', upload.array('files'), async (req, res) => {
             const parsedData = JSON.parse(parsedInfo);
             // Combine parsed data with existing combinedData object
             for (const [key, value] of Object.entries(parsedData)) {
-                if (key != "name" && key != "email" && combinedData[key]) {
+                if (key == "name" || key == "email") {
+                  continue;
+                } else if (combinedData[key]) {
                     combinedData[key] += `\n${value}`; // Concatenate if key already exists
                 } else {
                     combinedData[key] = value; // Add new key-value pair if key doesn't exist
                 }
             }
           } else {
-            responses.push({ filename: file.originalname, message: 'Unsupported file type' });
+            throw new Error('Unsupported file type');
           }
         }
         console.log(combinedData);
         //upload json to database
-        await uploadMentee(combinedData);
-        res.json(responses);
+        const response = await uploadMentee(combinedData);
+        return res.json(response);
     } catch (error) {
         console.error('Error in /upload/mentee endpoint:', error.message);
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ statusCode: 500, message: error.message });
     }
 });
 

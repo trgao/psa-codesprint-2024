@@ -1,7 +1,6 @@
 "use server"
 
 import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server'
 
 export async function signUp(formData: FormData) {
   // post to backend but no backend yet so
@@ -20,34 +19,35 @@ export async function signUp(formData: FormData) {
     userData.append("job_description", formData.get("jobDescription") as string)
     userData.append("mbti", formData.get("mbti") as string)
     userData.append("location", formData.get("location") as string)
+    // change to proper api backend
     if (userType == "Mentee") {
-      fetch("http://localhost:8000/upload/mentee", {
+      return fetch("http://localhost:8000/upload/mentee", {
         method: "POST",
         body: userData
       })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err))
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.statusCode == 200) {
+            redirect('/login')
+          } else {
+            console.log(res)
+            throw new Error(res.message)
+          }
+        })
     } else {
-      fetch("http://localhost:8000/upload/mentor", {
+      return fetch("http://localhost:8000/upload/mentor", {
         method: "POST",
         body: userData
       })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err))
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.statusCode == 200) {
+            redirect('/login')
+          } else {
+            console.log(res)
+            throw new Error(res.message)
+          }
+        })
     }
   }
-  // const supabase = createClient()
-
-  // const data = {
-  //   email: formData.get('email') as string,
-  //   password: formData.get('password') as string,
-  // }
-
-  // const { error } = await supabase.auth.signUp(data)
-
-  // if (error) {
-  //   console.log(error)
-  // }
-
-  // redirect('/dashboard')
 }
