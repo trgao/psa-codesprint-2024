@@ -4,6 +4,8 @@ const multer = require('multer');
 const { extractTextFromPdf } = require('./services/pdfService');
 const { parsePdfContentToSections } = require('./services/gptService');
 const { uploadMentee } = require('./services/uploadMentee');
+const { uploadMentor } = require('./services/uploadMentor');
+const { matching } = require('./services/Matching');
 // const { saveParsedDataToSupabase } = require('./services/supabaseService');
 // const { matchMenteeToMentor } = require('./services/matchingService'); // Assuming you have a matching service
 
@@ -47,7 +49,7 @@ app.post('/upload/mentor', upload.array('files'), async (req, res) => {
     }
     console.log(combinedData);
     //upload json to database
-    uploadMentee(combinedData);
+    uploadMentor(combinedData);
     res.json(responses);
   } catch (error) {
     console.error('Error in /upload/mentor endpoint:', error.message);
@@ -100,6 +102,17 @@ app.post('/upload/mentee', upload.array('files'), async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+app.post('/matching', (req, res) => {
+    try {
+      matching(); // Call your main matching function
+      res.send('Matching process triggered successfully');
+    } catch (error) {
+      res.status(500).send('Error triggering matching process');
+    }
+});
+
+
 app.get('/', (req, res) => {
     res.send('Server is running!');
   });
