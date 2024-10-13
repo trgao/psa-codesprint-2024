@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 
 export async function signUp(formData: FormData) {
-  // post to backend but no backend yet so
   if (
     (formData.get("password") as String) !=
     (formData.get("confirmPassword") as String)

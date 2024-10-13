@@ -30,130 +30,128 @@ export default function SignUp() {
   };
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center bg-blue-100">
-      {/* Form Card */}
-      <div className="flex flex-row bg-white shadow-md rounded-lg overflow-hidden w-[60%] h-auto">
-        {/* Form Section */}
-        <div className="w-1/2 p-10">
-          <h1 className="text-3xl font-bold text-blue-600 mb-4">Sign up</h1>
-          <form className="flex flex-col gap-4">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email*"
-              className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
-              required
-            />
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Password*"
-              className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
-              required
-            />
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirm Password*"
-              className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
-              required
-            />
-            <div className="flex justify-between w-full">
-              <div>
-                <input
-                  type="radio"
-                  name="userType"
-                  id="Mentee"
-                  value="Mentee"
-                  defaultChecked
-                  onChange={changeValue}
-                />
-                <label htmlFor="Mentee" className="ml-2">
-                  {" "}
-                  Mentee
-                </label>
+    <div className="h-full w-full p-10 bg-blue-100">
+      <div className=" flex justify-center items-center">
+        <div className="flex flex-row bg-white shadow-md rounded-lg overflow-hidden w-[60%] h-auto">
+          <div className="w-1/2 p-10">
+            <h1 className="text-3xl font-bold text-blue-600 mb-4">Sign up</h1>
+            <form className="flex flex-col gap-4">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email*"
+                className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
+                required
+              />
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Password*"
+                className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
+                required
+              />
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm Password*"
+                className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
+                required
+              />
+              <div className="flex justify-between w-full">
+                <div>
+                  <input
+                    type="radio"
+                    name="userType"
+                    id="Mentee"
+                    value="Mentee"
+                    defaultChecked
+                    onChange={changeValue}
+                  />
+                  <label htmlFor="Mentee" className="ml-2">
+                    {" "}
+                    Mentee
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="userType"
+                    id="Mentor"
+                    value="Mentor"
+                    onChange={changeValue}
+                  />
+                  <label htmlFor="Mentor" className="ml-2">
+                    {" "}
+                    Mentor
+                  </label>
+                </div>
               </div>
-              <div>
-                <input
-                  type="radio"
-                  name="userType"
-                  id="Mentor"
-                  value="Mentor"
-                  onChange={changeValue}
-                />
-                <label htmlFor="Mentor" className="ml-2">
-                  {" "}
-                  Mentor
-                </label>
-              </div>
-            </div>
-            <input
-              id="menteeCount"
-              name="menteeCount"
-              placeholder="Mentee Count*"
-              className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
-              hidden={value == "Mentee"}
-            />
-            <textarea
-              id="jobDescription"
-              name="jobDescription"
-              placeholder="Job Description*"
-              className="border border-solid border-gray-300 rounded-md w-full h-24 p-2"
-              required
-            />
-            <input
-              id="mbti"
-              name="mbti"
-              placeholder="MBTI*"
-              className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
-              required
-            />
-            <input
-              id="location"
-              name="location"
-              placeholder="Location*"
-              className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
-              required
-            />
-            <input
-              type="file"
-              accept="application/pdf"
-              name="resume"
-              className="text-sm file:rounded-full
-                file:py-2 file:px-6 file:border-0
-                file:font-medium file:bg-blue-600 file:text-white
-                file:shadow-md file:transition-all
-                hover:file:cursor-pointer hover:file:bg-blue-700
-                hover:file:shadow-lg file:duration-300 file:mr-5"
-              required
-            />
-            {/* Buttons */}
-            <button
-              formAction={handleSubmit}
-              disabled={isPending}
-              className="bg-blue-600 rounded-lg w-full h-12 text-white text-lg mt-2"
-            >
-              {isPending ? "Loading" : "Sign Up"}
-            </button>
-            <Link href="/login">
-              <button className="text-blue-600 mt-2">
-                I am already a member
+              <input
+                id="menteeCount"
+                name="menteeCount"
+                placeholder="Mentee Count*"
+                className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
+                hidden={value == "Mentee"}
+              />
+              <textarea
+                id="jobDescription"
+                name="jobDescription"
+                placeholder="Job Description*"
+                className="border border-solid border-gray-300 rounded-md w-full h-24 p-2"
+                required
+              />
+              <input
+                id="mbti"
+                name="mbti"
+                placeholder="MBTI*"
+                className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
+                required
+              />
+              <input
+                id="location"
+                name="location"
+                placeholder="Location*"
+                className="border border-solid border-gray-300 rounded-md w-full h-12 p-2"
+                required
+              />
+              <input
+                type="file"
+                accept="application/pdf"
+                name="resume"
+                className="text-sm file:rounded-full
+                  file:py-2 file:px-6 file:border-0
+                  file:font-medium file:bg-blue-600 file:text-white
+                  file:shadow-md file:transition-all
+                  hover:file:cursor-pointer hover:file:bg-blue-700
+                  hover:file:shadow-lg file:duration-300 file:mr-5"
+                required
+              />
+              <button
+                formAction={handleSubmit}
+                disabled={isPending}
+                className="bg-blue-600 rounded-lg w-full h-12 text-white text-lg mt-2"
+              >
+                {isPending ? "Loading" : "Sign Up"}
               </button>
-            </Link>
-          </form>
-        </div>
+              <Link href="/login">
+                <button className="text-blue-600 mt-2">
+                  I am already a member
+                </button>
+              </Link>
+            </form>
+          </div>
 
-        {/* Illustration Section */}
-        <div className="w-1/2 flex items-center justify-center p-6 bg-gray-100">
-          <Image
-            src={img}
-            alt="Sign In Illustration"
-            width={400}
-            height={600}
-          />
+          <div className="w-1/2 flex items-center justify-center p-6">
+            <Image
+              src={img}
+              alt="Sign In Illustration"
+              width={400}
+              height={600}
+            />
+          </div>
         </div>
       </div>
     </div>

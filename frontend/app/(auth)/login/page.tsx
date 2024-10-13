@@ -23,10 +23,8 @@ export default function Login() {
 
   return (
     <div className="h-screen w-screen flex justify-center items-center bg-blue-100">
-      {/* Form Card */}
       <div className="flex flex-row bg-white shadow-md rounded-lg overflow-hidden w-[60%] h-[80%]">
-        {/* Illustration Section */}
-        <div className="w-1/2 flex items-center justify-center p-6 bg-gray-100">
+        <div className="w-1/2 flex items-center justify-center p-6">
           <Image
             src={img}
             alt="Sign In Illustration"
@@ -35,7 +33,6 @@ export default function Login() {
           />
         </div>
 
-        {/* Form Section */}
         <div className="w-1/2 flex flex-col items-center justify-center p-10">
           <h1 className="text-3xl font-bold text-blue-600 mb-4">Sign In</h1>
           <form className="flex flex-col gap-4 w-full items-center">

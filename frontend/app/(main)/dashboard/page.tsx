@@ -3,8 +3,6 @@ import { notFound, redirect } from 'next/navigation'
 import Mentees from './mentees'
 import Mentors from './mentors'
 import SuperAdmin from './superadmin'
-import Image from 'next/image'
-import { signOut } from '../actions'
 
 export default async function Dashboard() {
   const supabase = createClient()
