@@ -237,25 +237,39 @@ async function matching() {
 
     // Append capacity vector as a space-separated string
     input += capacityVector.join(' ') + '\n';
-
-    // Spawn the C++ executable
-    const program = spawn('C:/Users/tkt20/psa-codesprint-2024/backend/hungarian.exe');
-
+    console.log(input);
+    const program = spawn('services/hungarian.exe'); 
     // Send the formatted input data to the program's stdin
     program.stdin.write(input);
     program.stdin.end(); // Close the stdin stream after sending all input data
 
+    let mentorsData = [];
+
     // Handle the program's output
     program.stdout.on('data', (data) => {
-    console.log(`Output: ${data}`);
+        const lines = data.toString().trim().split('\n');
+    
+        lines.forEach((line, index) => {
+            console.log(line,index);
+            // Assume each line is space-separated: 'mentor_id mentee_id1 mentee_id2 ...'
+            const menteeIndexes = line.trim().split(/\s+/);
+            
+            const mentorId = mentors[index].id;
+            
+            // Create individual mentor-mentee pair objects
+            menteeIndexes.forEach((menteeIndex) => {
+                mentorsData.push({ mentor_id: mentorId, mentee_id: mentees[menteeIndex].id });
+                
+            });
+        });
     });
-
     program.stderr.on('data', (data) => {
-    console.error(`Error: ${data}`);
+        console.error(`Error: ${data}`);
     });
 
     program.on('close', (code) => {
-    console.log(`Process exited with code ${code}`);
+        console.log(`Process exited with code ${code}`);
+        console.log('Generated JSON:', JSON.stringify(mentorsData, null, 2));
     });
 
   } catch (error) {
