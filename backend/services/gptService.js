@@ -16,7 +16,8 @@ async function parsePdfContentToSections(text) {
         
         Content: ${text}
         
-        Respond with a JSON object containing these sections and ONLY these sections, even if some sections are empty or not present.
+        Respond with a JSON object containing these sections and ONLY these sections, even if some sections are empty or not present, name CANNOT be null.
+        ONLY if name cannot be found, its the first 2 or 3 words.
     `;
     
 
